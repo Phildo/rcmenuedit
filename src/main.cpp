@@ -69,6 +69,17 @@ static const REGISTRY_LOCATION g_file_locations[] = {
     {L"file", L"HKLM", HKEY_LOCAL_MACHINE, L"Software\\Classes\\*\\shellex\\ContextMenuHandlers", L"handler"},
 };
 
+static const REGISTRY_LOCATION g_image_locations[] = {
+    {L"image", L"HKCU", HKEY_CURRENT_USER, L"Software\\Classes\\SystemFileAssociations\\image\\shell", L"shell"},
+    {L"image", L"HKCU", HKEY_CURRENT_USER, L"Software\\Classes\\SystemFileAssociations\\image\\shellex\\ContextMenuHandlers", L"handler"},
+    {L"image", L"HKCU", HKEY_CURRENT_USER, L"Software\\Classes\\SystemFileAssociations\\.png\\Shell", L"shell"},
+    {L"image", L"HKCU", HKEY_CURRENT_USER, L"Software\\Classes\\SystemFileAssociations\\.png\\ShellEx\\ContextMenuHandlers", L"handler"},
+    {L"image", L"HKLM", HKEY_LOCAL_MACHINE, L"Software\\Classes\\SystemFileAssociations\\image\\shell", L"shell"},
+    {L"image", L"HKLM", HKEY_LOCAL_MACHINE, L"Software\\Classes\\SystemFileAssociations\\image\\shellex\\ContextMenuHandlers", L"handler"},
+    {L"image", L"HKLM", HKEY_LOCAL_MACHINE, L"Software\\Classes\\SystemFileAssociations\\.png\\Shell", L"shell"},
+    {L"image", L"HKLM", HKEY_LOCAL_MACHINE, L"Software\\Classes\\SystemFileAssociations\\.png\\ShellEx\\ContextMenuHandlers", L"handler"},
+};
+
 static const REGISTRY_LOCATION g_folder_locations[] = {
     {L"folder", L"HKCU", HKEY_CURRENT_USER, L"Software\\Classes\\Directory\\shell", L"shell"},
     {L"folder", L"HKCU", HKEY_CURRENT_USER, L"Software\\Classes\\Directory\\shellex\\ContextMenuHandlers", L"handler"},
@@ -104,6 +115,7 @@ static const REGISTRY_LOCATION g_explorer_locations[] = {
 
 static const SCOPE g_scopes[] = {
     {L"file", L"File right-click menu entries", g_file_locations, (int)(sizeof(g_file_locations) / sizeof(g_file_locations[0]))},
+    {L"image", L"Image file right-click entries, including PNG associations", g_image_locations, (int)(sizeof(g_image_locations) / sizeof(g_image_locations[0]))},
     {L"folder", L"Folder right-click menu entries", g_folder_locations, (int)(sizeof(g_folder_locations) / sizeof(g_folder_locations[0]))},
     {L"desktop", L"Desktop background right-click menu entries", g_desktop_locations, (int)(sizeof(g_desktop_locations) / sizeof(g_desktop_locations[0]))},
     {L"explorer", L"Explorer background, drive, and filesystem entries", g_explorer_locations, (int)(sizeof(g_explorer_locations) / sizeof(g_explorer_locations[0]))},
@@ -123,6 +135,42 @@ static const wchar_t *g_builtin_copilot_clsids[] = {
 
 static const wchar_t *g_builtin_defender_clsids[] = {
     L"{09A47860-11B0-4DA5-AFA5-26D86198A780}",
+};
+
+static const wchar_t *g_builtin_image_resizer_clsids[] = {
+    L"{51B4D7E5-7568-4234-B4BB-47FB3C016A69}",
+};
+
+static const wchar_t *g_builtin_cast_to_device_clsids[] = {
+    L"{7AD84985-87B4-4A16-BE58-8B72A5B390F7}",
+};
+
+static const wchar_t *g_builtin_share_clsids[] = {
+    L"{E2BF9676-5F8F-435C-97EB-11607A5BEDF7}",
+};
+
+static const wchar_t *g_builtin_give_access_clsids[] = {
+    L"{F81E9010-6EA4-11CE-A7FF-00AA003CA9F6}",
+};
+
+static const wchar_t *g_builtin_previous_versions_clsids[] = {
+    L"{596AB062-B4D2-4215-9F74-E9109B0A8153}",
+};
+
+static const wchar_t *g_builtin_rotate_image_clsids[] = {
+    L"{FFE2A43C-56B9-4BF5-9A79-CC6D4285608A}",
+};
+
+static const wchar_t *g_builtin_paint_3d_paths[] = {
+    L"HKLM\\Software\\Classes\\SystemFileAssociations\\.bmp\\Shell\\3D Edit",
+    L"HKLM\\Software\\Classes\\SystemFileAssociations\\.gif\\Shell\\3D Edit",
+    L"HKLM\\Software\\Classes\\SystemFileAssociations\\.jfif\\Shell\\3D Edit",
+    L"HKLM\\Software\\Classes\\SystemFileAssociations\\.jpe\\Shell\\3D Edit",
+    L"HKLM\\Software\\Classes\\SystemFileAssociations\\.jpeg\\Shell\\3D Edit",
+    L"HKLM\\Software\\Classes\\SystemFileAssociations\\.jpg\\Shell\\3D Edit",
+    L"HKLM\\Software\\Classes\\SystemFileAssociations\\.png\\Shell\\3D Edit",
+    L"HKLM\\Software\\Classes\\SystemFileAssociations\\.tif\\Shell\\3D Edit",
+    L"HKLM\\Software\\Classes\\SystemFileAssociations\\.tiff\\Shell\\3D Edit",
 };
 
 static const wchar_t *g_builtin_setdesktopwallpaper_paths[] = {
@@ -153,6 +201,13 @@ static const BUILTIN_TARGET g_builtin_targets[] = {
     {L"copilot", L"Ask Copilot", BUILTIN_ACTION_BLOCK_CLSID, g_builtin_copilot_clsids, (int)(sizeof(g_builtin_copilot_clsids) / sizeof(g_builtin_copilot_clsids[0]))},
     {L"set-desktop-background", L"Set as desktop background", BUILTIN_ACTION_REMOVE_PATHS, g_builtin_setdesktopwallpaper_paths, (int)(sizeof(g_builtin_setdesktopwallpaper_paths) / sizeof(g_builtin_setdesktopwallpaper_paths[0]))},
     {L"defender", L"Scan with Microsoft Defender", BUILTIN_ACTION_BLOCK_CLSID, g_builtin_defender_clsids, (int)(sizeof(g_builtin_defender_clsids) / sizeof(g_builtin_defender_clsids[0]))},
+    {L"paint-3d", L"Edit with Paint 3D", BUILTIN_ACTION_REMOVE_PATHS, g_builtin_paint_3d_paths, (int)(sizeof(g_builtin_paint_3d_paths) / sizeof(g_builtin_paint_3d_paths[0]))},
+    {L"image-resizer", L"Resize with Image Resizer", BUILTIN_ACTION_BLOCK_CLSID, g_builtin_image_resizer_clsids, (int)(sizeof(g_builtin_image_resizer_clsids) / sizeof(g_builtin_image_resizer_clsids[0]))},
+    {L"cast-to-device", L"Cast to Device", BUILTIN_ACTION_BLOCK_CLSID, g_builtin_cast_to_device_clsids, (int)(sizeof(g_builtin_cast_to_device_clsids) / sizeof(g_builtin_cast_to_device_clsids[0]))},
+    {L"share", L"Share", BUILTIN_ACTION_BLOCK_CLSID, g_builtin_share_clsids, (int)(sizeof(g_builtin_share_clsids) / sizeof(g_builtin_share_clsids[0]))},
+    {L"give-access-to", L"Give access to", BUILTIN_ACTION_BLOCK_CLSID, g_builtin_give_access_clsids, (int)(sizeof(g_builtin_give_access_clsids) / sizeof(g_builtin_give_access_clsids[0]))},
+    {L"restore-previous-versions", L"Restore previous versions", BUILTIN_ACTION_BLOCK_CLSID, g_builtin_previous_versions_clsids, (int)(sizeof(g_builtin_previous_versions_clsids) / sizeof(g_builtin_previous_versions_clsids[0]))},
+    {L"rotate-image", L"Rotate left / Rotate right", BUILTIN_ACTION_BLOCK_CLSID, g_builtin_rotate_image_clsids, (int)(sizeof(g_builtin_rotate_image_clsids) / sizeof(g_builtin_rotate_image_clsids[0]))},
 };
 
 static int count_scopes(void) {
@@ -169,6 +224,9 @@ static wchar_t *load_text_file(const wchar_t *filename);
 static int parse_import_record(const wchar_t *line, wchar_t *scope_name, DWORD scope_chars, wchar_t *entry_name, DWORD entry_chars, wchar_t *full_path, DWORD path_chars);
 static int apply_builtin_target(const BUILTIN_TARGET *target);
 static int preserved_export_contains_path(const PRESERVED_EXPORT_STATE *state, const wchar_t *path);
+static int is_handler_entry(const REGISTRY_LOCATION *location);
+static int is_clsid_text(const wchar_t *text);
+static int lookup_clsid_label(const wchar_t *clsid, wchar_t *label, DWORD label_chars);
 
 static int append_wchar(wchar_t *buffer, DWORD buffer_chars, DWORD *used, wchar_t ch) {
     if (*used + 1 >= buffer_chars) {
@@ -407,18 +465,102 @@ static void build_registry_path(const REGISTRY_LOCATION *location, const wchar_t
     }
 }
 
-static void load_entry_metadata(HKEY entry_key, wchar_t *display, DWORD display_chars, wchar_t *command, DWORD command_chars) {
+static int is_handler_entry(const REGISTRY_LOCATION *location) {
+    return location != NULL && location->entry_type != NULL && _wcsicmp(location->entry_type, L"handler") == 0;
+}
+
+static int is_clsid_text(const wchar_t *text) {
+    size_t length;
+
+    if (text == NULL) {
+        return 0;
+    }
+
+    length = wcslen(text);
+    return length == 38 && text[0] == L'{' && text[length - 1] == L'}';
+}
+
+static int lookup_clsid_label(const wchar_t *clsid, wchar_t *label, DWORD label_chars) {
+    static const struct {
+        const wchar_t *clsid;
+        const wchar_t *label;
+    } known_labels[] = {
+        {L"{51B4D7E5-7568-4234-B4BB-47FB3C016A69}", L"Resize with Image Resizer"},
+        {L"{596AB062-B4D2-4215-9F74-E9109B0A8153}", L"Restore previous versions"},
+        {L"{7AD84985-87B4-4A16-BE58-8B72A5B390F7}", L"Cast to Device"},
+        {L"{E2BF9676-5F8F-435C-97EB-11607A5BEDF7}", L"Share"},
+        {L"{F81E9010-6EA4-11CE-A7FF-00AA003CA9F6}", L"Give access to"},
+        {L"{FFE2A43C-56B9-4BF5-9A79-CC6D4285608A}", L"Rotate left / Rotate right"},
+    };
+    int i;
+    wchar_t clsid_path[128];
+    HKEY clsid_key;
+
+    if (label == NULL || label_chars == 0 || !is_clsid_text(clsid)) {
+        return 0;
+    }
+
+    for (i = 0; i < (int)(sizeof(known_labels) / sizeof(known_labels[0])); i++) {
+        if (_wcsicmp(known_labels[i].clsid, clsid) == 0) {
+            return SUCCEEDED(StringCchCopyW(label, label_chars, known_labels[i].label));
+        }
+    }
+
+    if (FAILED(StringCchPrintfW(clsid_path, sizeof(clsid_path) / sizeof(clsid_path[0]), L"CLSID\\%ls", clsid))) {
+        return 0;
+    }
+
+    if (RegOpenKeyExW(HKEY_CLASSES_ROOT, clsid_path, 0, KEY_READ, &clsid_key) != ERROR_SUCCESS) {
+        return 0;
+    }
+
+    if (!query_registry_string(clsid_key, NULL, label, label_chars)) {
+        RegCloseKey(clsid_key);
+        return 0;
+    }
+
+    RegCloseKey(clsid_key);
+    return label[0] != L'\0';
+}
+
+static void load_entry_metadata(const REGISTRY_LOCATION *location, const wchar_t *entry_name, HKEY entry_key, wchar_t *display, DWORD display_chars, wchar_t *command, DWORD command_chars) {
     HKEY command_key;
+    int have_display;
 
     display[0] = L'\0';
     command[0] = L'\0';
+    have_display = 0;
 
-    if (!query_registry_string(entry_key, L"MUIVerb", display, display_chars)) {
-        if (!query_registry_string(entry_key, NULL, display, display_chars)) {
-            if (!query_registry_string(entry_key, L"VerbName", display, display_chars)) {
-                StringCchCopyW(display, display_chars, L"(no display text)");
-            }
+    if (is_handler_entry(location) &&
+        entry_name != NULL &&
+        is_clsid_text(entry_name) &&
+        lookup_clsid_label(entry_name, display, display_chars)) {
+        have_display = 1;
+    } else if (query_registry_string(entry_key, L"MUIVerb", display, display_chars)) {
+        have_display = 1;
+    } else if (query_registry_string(entry_key, NULL, display, display_chars)) {
+        have_display = 1;
+    } else if (query_registry_string(entry_key, L"VerbName", display, display_chars)) {
+        have_display = 1;
+    }
+
+    if (is_handler_entry(location) && (!have_display || is_clsid_text(display))) {
+        wchar_t clsid[128];
+
+        if (!query_registry_string(entry_key, NULL, clsid, sizeof(clsid) / sizeof(clsid[0])) &&
+            entry_name != NULL &&
+            is_clsid_text(entry_name)) {
+            StringCchCopyW(clsid, sizeof(clsid) / sizeof(clsid[0]), entry_name);
         }
+
+        if (is_clsid_text(clsid) &&
+            lookup_clsid_label(clsid, display, display_chars)) {
+            have_display = 1;
+        }
+    }
+
+    if (!have_display) {
+        StringCchCopyW(display, display_chars, L"(no display text)");
     }
 
     if (RegOpenKeyExW(entry_key, L"command", 0, KEY_READ, &command_key) == ERROR_SUCCESS) {
@@ -712,7 +854,7 @@ static int enumerate_location_entries(const REGISTRY_LOCATION *location, const w
             wchar_t command[2048];
             wchar_t path[1024];
 
-            load_entry_metadata(entry_key, display, sizeof(display) / sizeof(display[0]), command, sizeof(command) / sizeof(command[0]));
+            load_entry_metadata(location, entry_name, entry_key, display, sizeof(display) / sizeof(display[0]), command, sizeof(command) / sizeof(command[0]));
             build_registry_path(location, entry_name, path, sizeof(path) / sizeof(path[0]));
 
             if (entry_matches_filter(filter, entry_name, display, command, path)) {
@@ -1566,7 +1708,7 @@ static int remove_matches_in_location(const REGISTRY_LOCATION *location, const w
                 wchar_t display[1024];
                 wchar_t command[2048];
 
-                load_entry_metadata(entry_key, display, sizeof(display) / sizeof(display[0]), command, sizeof(command) / sizeof(command[0]));
+                load_entry_metadata(location, entry_name, entry_key, display, sizeof(display) / sizeof(display[0]), command, sizeof(command) / sizeof(command[0]));
                 RegCloseKey(entry_key);
 
                 if (entry_matches_remove_target(query, entry_name, display)) {
